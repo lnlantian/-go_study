@@ -1,6 +1,4 @@
 安装go：
-# 1.1安装 Go
-
 ## Go的三种安装方式
 Go有多种安装方式，你可以选择自己喜欢的。这里我们介绍三种最常见的安装方式：
 
@@ -11,14 +9,11 @@ Go有多种安装方式，你可以选择自己喜欢的。这里我们介绍三
 最后，如果你想在同一个系统中安装多个版本的Go，你可以参考第三方工具[GVM](https://github.com/moovweb/gvm)，这是目前在这方面做得最好的工具，除非你知道怎么处理。
 
 ## Go源码安装
+
 Go 1.5彻底移除C代码，Runtime、Compiler、Linker均由Go编写,实现自举。只需要安装了上一个版本,即可从源码安装。
-
 在Go 1.5前,Go的源代码中，有些部分是用Plan 9 C和AT&T汇编写的，因此假如你要想从源码安装，就必须安装C的编译工具。
-
 在Mac系统中，只要你安装了Xcode，就已经包含了相应的编译工具。
-
 在类Unix系统中，需要安装gcc等工具。例如Ubuntu系统可通过在终端中执行`sudo apt-get install gcc libc6-dev`来安装编译工具。
-
 在Windows系统中，你需要安装MinGW，然后通过MinGW安装gcc，并设置相应的环境变量。
 
 你可以直接去官网[下载源码](http://golang.org/dl/)，找相应的`goVERSION.src.tar.gz`的文件下载，下载之后解压缩到`$HOME`目录，执行如下代码：
@@ -27,31 +22,24 @@ Go 1.5彻底移除C代码，Runtime、Compiler、Linker均由Go编写,实现自�
 	./all.bash
 
 运行all.bash后出现"ALL TESTS PASSED"字样时才算安装成功。
-
 上面是Unix风格的命令，Windows下的安装方式类似，只不过是运行`all.bat`，调用的编译器是MinGW的gcc。
-
 如果是Mac或者Unix用户需要设置几个环境变量，如果想重启之后也能生效的话把下面的命令写到`.bashrc`或者`.zshrc`里面，
 
 	export GOPATH=$HOME/gopath
 	export PATH=$PATH:$HOME/go/bin:$GOPATH/bin
 
 如果你是写入文件的，记得执行`bash .bashrc`或者`bash .zshrc`使得设置立马生效。
-
 如果是window系统，就需要设置环境变量，在path里面增加相应的go所在的目录，设置gopath变量。
-
 当你设置完毕之后在命令行里面输入`go`，看到如下图片即说明你已经安装成功
-
 ![](images/1.1.mac.png?raw=true)
 
 图1.1 源码安装之后执行Go命令的图
 
 如果出现Go的Usage信息，那么说明Go已经安装成功了；如果出现该命令不存在，那么可以检查一下自己的PATH环境变中是否包含了Go的安装目录。
-
 从go 1.8开始，GOPATH环境变量现在有一个默认值，如果它没有被设置。 它在Unix上默认为$HOME/go,在Windows上默认为%USERPROFILE%/go。
 > 关于上面的GOPATH将在下面小节详细讲解
 
 ## Go标准包安装
-
 Go提供了每个平台打好包的一键安装，这些包默认会安装到如下目录：/usr/local/go (Windows系统：c:\Go)，当然你可以改变他们的安装位置，但是改变之后你必须在你的环境变量中设置如下信息：
 
 	export GOROOT=$HOME/go  
@@ -59,24 +47,6 @@ Go提供了每个平台打好包的一键安装，这些包默认会安装到如
 	export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 上面这些命令对于Mac和Unix用户来说最好是写入`.bashrc`或者`.zshrc`文件，对于windows用户来说当然是写入环境变量。	
-
-### 如何判断自己的操作系统是32位还是64位？
-
-我们接下来的Go安装需要判断操作系统的位数，所以这小节我们先确定自己的系统类型。
-
-Windows系统用户请按Win+R运行cmd，输入`systeminfo`后回车，稍等片刻，会出现一些系统信息。在“系统类型”一行中，若显示“x64-based PC”，即为64位系统；若显示“X86-based PC”，则为32位系统。
-
-Mac系统用户建议直接使用64位的，因为Go所支持的Mac OS X版本已经不支持纯32位处理器了。
-
-Linux系统用户可通过在Terminal中执行命令`arch`(即`uname -m`)来查看系统信息：
-
-64位系统显示
-
-	x86_64
-
-32位系统显示
-
-	i386
 
 ### Mac 安装
 
@@ -104,19 +74,7 @@ Linux系统用户可通过在Terminal中执行命令`arch`(即`uname -m`)来查�
 
 如果出现go的Usage信息，那么说明go已经安装成功了；如果出现该命令不存在，那么可以检查一下自己的PATH环境变中是否包含了go的安装目录。
 
-### Windows 安装 ###
-
-访问[Golang 下载页][downlink]，32 位请选择名称中包含 windows-386 的 msi 安装包，64 位请选择名称中包含 windows-amd64 的。下载好后运行，不要修改默认安装目录 C:\Go\，若安装到其他位置会导致不能执行自己所编写的 Go 代码。安装完成后默认会在环境变量 Path 后添加 Go 安装目录下的 bin 目录 `C:\Go\bin\`，并添加环境变量 GOROOT，值为 Go 安装根目录 `C:\Go\` 。
-
-**验证是否安装成功**
-
-在运行中输入 `cmd` 打开命令行工具，在提示符下输入 `go`，检查是否能看到 Usage 信息。输入 `cd %GOROOT%`，看是否能进入 Go 安装目录。若都成功，说明安装成功。
-
-不能的话请检查上述环境变量 Path 和 GOROOT 的值。若不存在请卸载后重新安装，存在请重启计算机后重试以上步骤。
-
 ## 第三方工具安装
-
-### GVM
 
 gvm是第三方开发的Go多版本管理工具，类似ruby里面的rvm工具。使用起来相当的方便，安装gvm使用如下命令：
 ```sh
@@ -129,9 +87,7 @@ bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/bins
 gvm install go1.8.3
 gvm use go1.8.3
 ```
-也可以使用下面的命令，省去每次调用gvm use的麻烦：
-        gvm use go1.8.3 --default
-        
+也可以使用下面的命令，省去每次调用gvm use的麻烦：    
 执行完上面的命令之后GOPATH、GOROOT等环境变量会自动设置好，这样就可以直接使用了。
 
 ### apt-get
@@ -205,7 +161,10 @@ brew install mercurial //可选安装
 安装IntelliJ IDEA
 [downlink]:https://www.jetbrains.com/idea/download/ "下载地址"
 
-下载go-lang-idea-plugin这个插件，下载地址: https://plugins.jetbrains.com/plugin/5047。(PS:网上百度的基本都是下源码、编译，搞了一个下午编译，谁知道有已经编译好的可以下载)
-下载之后，是一个zip文件，不需要解压，打开IntelliJ IDEA，打开Preferences->Plugins，点击Install plugin from disk...，选择刚下载的zip文件，然后重启一下，插件就这样安装好了。
-打开File->Project Structure...，找不到的随便打开一个项目就能看到。点击SDKS，新建一个GO SDK，填上GO的安装目录。
+下载go-lang-idea-plugin这个插件，下载地址: https://plugins.jetbrains.com/plugin/5047
+
+下载之后，是一个zip文件，不需要解压，打开IntelliJ IDEA，打开Preferences->Plugins，点击Install plugin from disk...，选择刚下载的zip文件中mac系统对应文件（我的电脑是mac），然后重启一下，插件就这样安装好了
+
+打开File->Project Structure...，找不到的随便打开一个项目就能看到。点击SDKS，新建一个GO SDK，填上GO的安装目录
+
 随便新建一个Go项目，点击Edit Configurations...，新建一个Go Application，右边File你的pack main包含func main的文件，Output directory为编译后的文件输出目录。新建完毕后，选择新建的Debug选项就可以编译、运行程序了。 
