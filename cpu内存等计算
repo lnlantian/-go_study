@@ -1,0 +1,35 @@
+1）Cpu数据
+
+docker daemon会记录这次读取/sys/fs/cgroup/cpuacct/docker/  [containerId]/cpuacct.usage的值，作为cpu_total_usage；并记录了上一次读取的该值为      pre_cpu_total_usage；读取/proc/stat中cpu field value，并进行累加，得到system_usage;并    记录上一次的值为pre_system_usage；读取/sys/fs/cgroup/cpuacct/docker/       [containerId]/cpuacct.usage_percpu中的记录，组成数组per_cpu_usage_array；
+
+docker stats计算Cpu Percent的算法：
+
+cpu_delta = cpu_total_usage – pre_cpu_total_usage;
+
+system_delta = system_usage – pre_system_usage;
+
+CPU % = ((cpu_delta / system_delta) * length(per_cpu_usage_array) ) * 100.0
+
+(2) Memory数据
+
+读取/sys/fs/cgroup/memory/docker/[containerId]/memory.usage_in_bytes的值，作为    mem_usage；如果容器限制了内存，则读取/sys/fs/cgroup/memory/docker/  [id]/memory.limit_in_bytes作为mem_limit，否则mem_limit = machine_mem；docker stats计算 Memory数据的算法：
+
+MEM USAGE = mem_usage
+
+MEM LIMIT = mem_limit
+
+MEM % = (mem_usage / mem_limit) * 100.0
+
+（3）Network Stats数据：
+
+获取属于该容器network namespace veth pairs在主机中对应的veth*虚拟网卡EthInterface       数组，然后循环数组中每个网卡设备，读取/sys/class/net/[device]/statistics/rx_bytes得到rx_bytes, 读取/sys/class/net/[device]/statistics/tx_bytes得到对应的tx_bytes。
+
+将所有这些虚拟网卡对应的rx_bytes累加得到该容器的rx_bytes。
+
+将所有这些虚拟网卡对应的tx_bytes累加得到该容器的tx_bytes。
+
+docker stats计算Network IO数据的算法：
+
+NET I = rx_bytes
+
+NET O = tx_bytes
